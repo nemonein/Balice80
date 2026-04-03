@@ -3,8 +3,8 @@
 
 #include QMK_KEYBOARD_H
 
-#include "quantum.h"       // TAP_DANCE 등 가능하게. 원래 있던 코드.
 #include "keymap_korean.h" // 이걸 해줘야 KR_HAEN, KR_HANJ 를 쓸 수 있다.
+#include "quantum.h"       // TAP_DANCE 등 가능하게. 원래 있던 코드.
 
 enum custom_keycodes {
     TG_MOZC = SAFE_RANGE, // 일본어 자판 전환용.
@@ -12,7 +12,9 @@ enum custom_keycodes {
                           // 상태에 따라 실제 발사될 키를 바꿔도 될 듯은 한데,
                           // 그냥 이렇게 해봤다.
                           // TEST_GRV = SAFE_RANGE + 1,
-                          // MCTRL_H = SAFE_RANGE + 2, // H(Dvorak)을 mod-tap 으로 이용하기 위한...
+                          // MCTRL_H = SAFE_RANGE + 2, // H(Dvorak)을 mod-tap 으로
+                          // 이용하기 위한...
+    PG_UPDN = SAFE_RANGE + 1,
 };
 
 // 각 자판 활성 Flag.
@@ -84,17 +86,22 @@ enum layer_names {
 
 오른쪽
 ┌─────┬──────┬───────┬─────────┬─────────┬──────────┬──────────┬─────────┬──────┐
-│ F7  │ F8   │ F9    │ F10     │ F11     │ F12      │ F13      │ DEL     │ MUTE │
+│ F7  │ F8   │ F9    │ F10     │ F11     │ F12      │ F13      │ DEL     │ MUTE
+│
 ├─────┼──────┼───────┼─────────┼─────────┼──────────┼──────────┼─────────┼──────┤
-│ 6   │ 7    │ 8     │ 9       │ 0       │ -(Minus) │ =(equal) │ BSPC    │ HOME │
+│ 6   │ 7    │ 8     │ 9       │ 0       │ -(Minus) │ =(equal) │ BSPC    │ HOME
+│
 ├─────┼──────┼───────┼─────────┼─────────┼──────────┼──────────┼─────────┼──────┤
-│ Y   │ U    │ I     │ O       │ P       │ [(LBRC)  │ ](RBRC)  │ \(BSLS) │ PGUP │
+│ Y   │ U    │ I     │ O       │ P       │ [(LBRC)  │ ](RBRC)  │ \(BSLS) │ PGUP
+│
 ├─────┼──────┼───────┼─────────┼─────────┼──────────┼──────────┼─────────┼──────┤
-│ H   │ J    │ K     │ L       │ ;(SCLN) │ (QUOT)   │ ENT      │         │ PGDN │
+│ H   │ J    │ K     │ L       │ ;(SCLN) │ (QUOT)   │ ENT      │         │ PGDN
+│
 ├─────┼──────┼───────┼─────────┼─────────┼──────────┼──────────┼─────────┼──────┤
-│ B   │ N    │ M     │ ,(COMM) │ .(DOT)  │ /(SLSH)  │ RSFT     │ UP      │      │
+│ B   │ N    │ M     │ ,(COMM) │ .(DOT)  │ /(SLSH)  │ RSFT     │ UP      │ │
 ├─────┼──────┼───────┼─────────┼─────────┼──────────┼──────────┼─────────┼──────┤
-│ SPC │ RALT │ MO(1) │ RCTL    │         │          │ LEFT     │ DOWN    │ RGHT │
+│ SPC │ RALT │ MO(1) │ RCTL    │         │          │ LEFT     │ DOWN    │ RGHT
+│
 └─────┴──────┴───────┴─────────┴─────────┴──────────┴──────────┴─────────┴──────┘
 
 
@@ -113,10 +120,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LSFT,     KC_SCLN,     KC_Q,        KC_J,        KC_K,        KC_X,
         LCDQ,        LSDQ,        KC_NO,       LADQ,        KC_SPC,
         // right hand
-        KC_F7,       KC_F8,       KC_F9,       KC_F10,      KC_F11,      KC_F12,      HM_CH,       ED_CE,       KC_MUTE,
-        KC_6,        KC_7,        KC_8,        KC_9,        KC_0,        KC_LBRC,     KC_RBRC,     KC_BSPC,     KC_DEL,
-        KC_F,        KC_G,        KC_C,        KC_R,        KC_L,        KC_SLSH,     KC_EQL,      KC_BSLS,     KC_PGUP,
-        KC_D,        KC_H,        KC_T,        KC_N,        KC_S,        KC_MINS,                  KC_ENT,      KC_PGDN,
+        KC_F7,       KC_F8,       KC_F9,       KC_F10,      KC_F11,      KC_F12,      KC_NO,       KC_DEL,       KC_MUTE,
+        KC_6,        KC_7,        KC_8,        KC_9,        KC_0,        KC_LBRC,     KC_RBRC,     KC_BSPC,     HM_CH,
+        KC_F,        KC_G,        KC_C,        KC_R,        KC_L,        KC_SLSH,     KC_EQL,      KC_BSLS,     PG_UPDN,
+        KC_D,        KC_H,        KC_T,        KC_N,        KC_S,        KC_MINS,                  KC_ENT,      ED_CE,
         KC_X,        KC_B,        KC_M,        KC_W,        KC_V,        KC_Z,        KC_RSFT,     KC_UP,
                      KC_SPC,                   KC_RALT,     MO(_FN),     KC_RCTL,     KC_LEFT,     KC_DOWN,     KC_RGHT
     ),
@@ -130,10 +137,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LSFT,     KC_Z,        KC_X,        KC_C,        KC_V,        KC_B,
         KC_LCTL,     KC_LWIN,     KC_NO,       KC_LALT,                  KC_SPC,
         // right hand
-        KC_F7,       KC_F8,       KC_F9,       KC_F10,      KC_F11,      KC_F12,      HM_CH,       ED_CE,       KC_MUTE,
-        KC_6,        KC_7,        KC_8,        KC_9,        KC_0,        KC_MINS,     KC_EQL,      KC_BSPC,     KC_DEL,
-        KC_Y,        KC_U,        KC_I,        KC_O,        KC_P,        KC_LBRC,     KC_RBRC,     KC_BSLS,     KC_PGUP,
-        KC_H,        KC_J,        KC_K,        KC_L,        KC_SCLN,     KC_QUOT,                  KC_ENT,      KC_PGDN,
+        KC_F7,       KC_F8,       KC_F9,       KC_F10,      KC_F11,      KC_F12,      KC_NO,       KC_DEL,      KC_MUTE,
+        KC_6,        KC_7,        KC_8,        KC_9,        KC_0,        KC_MINS,     KC_EQL,      KC_BSPC,     HM_CH,
+        KC_Y,        KC_U,        KC_I,        KC_O,        KC_P,        KC_LBRC,     KC_RBRC,     KC_BSLS,     PG_UPDN,
+        KC_H,        KC_J,        KC_K,        KC_L,        KC_SCLN,     KC_QUOT,                  KC_ENT,      ED_CE,
         KC_B,        KC_N,        KC_M,        KC_COMM,     KC_DOT,      KC_SLSH,     KC_RSFT,     KC_UP,
                      KC_SPC,                   KC_RALT,     MO(_FN),     KC_RCTL,     KC_LEFT,     KC_DOWN,     KC_RGHT
     ),
@@ -264,8 +271,34 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // // Default Layer 를 알아내는 방법.
   // uint8_t default_layer = get_highest_layer(default_layer_state);
 
+      const uint8_t mod_state = get_mods();                                 // Shift/Ctrl/Altl/Super 가 눌렸는지 확인.
+      static uint16_t registerd_key = KC_NO;
   switch (keycode) {
     // 여기서부터 내가 만든 것들.
+    //
+    // PgUp, PgDn 처리 : 그냥 누르면 PgUp, Alt+PgUp 은 PgDn. 궁여지책이긴 한데...
+    case PG_UPDN:
+      // const uint8_t mod_state = get_mods();                                 // Shift/Ctrl/Altl/Super 가 눌렸는지 확인.
+      const uint8_t MOD_MASK_LALT = MOD_BIT(KC_LALT);                     // 왼쪽 쉬프트
+      // static uint16_t registerd_key = KC_NO;
+
+      if (record->event.pressed) {                      // PG_UPDN 눌렸을 때.
+        if (mod_state & MOD_MASK_LALT) {              // LALT가 눌렸는지 확인
+            registerd_key = KC_PGDN;
+        } else {
+            registerd_key = KC_PGUP;
+        }
+        del_mods(mod_state & MOD_MASK_LALT);
+        register_code(registerd_key);
+        set_mods(mod_state & MOD_MASK_LALT);
+      }
+      else {
+          unregister_code(registerd_key);
+      }
+      return false;
+
+
+    //
     // Home Row Mode 用
     case HT_CT:
       return process_hmr_user(record, KC_LCTL);
@@ -315,11 +348,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // 다 잘 작동하는데, 딱 하나. Shift+SPC 를 계속 누르고 있을 때, 한/영 전환이 지속적으로 이뤄지지 않는다.
     // 굳이 이럴 필욘 없지만, 전엔 됐었는데, 안되니까 좀..?
     case KC_SPC:                                                            // SPACE 가 눌렸을 때!
-      const uint8_t mod_state = get_mods();                                 // Shift/Ctrl/Altl/Super 가 눌렸는지 확인.
+      // const uint8_t mod_state = get_mods();                                 // Shift/Ctrl/Altl/Super 가 눌렸는지 확인.
       const uint8_t MOD_MASK_LSHIFT = MOD_BIT(KC_LSFT);                     // 왼쪽 쉬프트
       const uint8_t default_layer = get_highest_layer(default_layer_state); // Default Layer 를 알아내는 방법.
       os_variant_t host = detected_host_os();                               // 키보드 접속 OS 확인
-      static uint16_t registerd_key = KC_NO;
+      // static uint16_t registerd_key = KC_NO;
       // static uint16_t registerd_key = KC_SPC;                            // 이걸 이렇게 해놓으면 역시나 뭔가 오류가
       // 생긴다. KC_NO 로 해야 제대로 작동.
 
