@@ -167,37 +167,37 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_NPD] = LAYOUT(
         // left hand
         // ESC       F1(1)        F2(2)        F3(3)        F4(4)        F5(5)        F6()
-        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_NO,
-        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_NO,
-        KC_TRNS,     KC_NO,       KC_COMM,     KC_DOT,      KC_NO,       KC_NUM,      TG(_NPD),
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
+        KC_TRNS,     KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_TRNS,
+        KC_TRNS,     KC_NO,       KC_COMM,     KC_DOT,      KC_NO,       KC_NO,       TG(_NPD),
         KC_NO,       KC_PPLS,     KC_PMNS,     KC_PAST,     KC_PSLS,     KC_NO,
         KC_TRNS,     KC_NO,       KC_NO,       KC_CALC,     KC_NO,       KC_NO,
         KC_LCTL,     KC_LGUI,     KC_NO,       KC_LALT,     KC_NO,
         // right hand
         // F7(6)     F8(7)        F9(8)        F10(9)       F11(0)       F12(-)       F13?(=)
-        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_NO,
-        KC_TRNS,     KC_TRNS,     KC_INS,      KC_TRNS,     KC_PSCR,     KC_TRNS,     KC_TRNS,     KC_TRNS,     TD(TD_HM_ED),
-        KC_TRNS,     KC_P7,       KC_P8,       KC_P9,       KC_PPLS,     KC_PMNS,     KC_PAST,     KC_PSLS,     KC_PGUP,
-        KC_TRNS,     KC_P4,       KC_P5,       KC_P6,       KC_PDOT,     KC_COMM,                  KC_TRNS,     KC_PGDN,
-        KC_TRNS,     KC_P0,       KC_P1,       KC_P2,       KC_P3,       KC_PEQL,     KC_TRNS,     KC_TRNS,
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
+        KC_NUM,      KC_PSLS,     KC_PAST,     KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_TRNS,     TD(TD_HM_ED),
+        KC_TRNS,     KC_P7,       KC_P8,       KC_P9,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_PGUP,
+        KC_TRNS,     KC_P4,       KC_P5,       KC_P6,       KC_PPLS,     KC_PMNS,                  KC_TRNS,     KC_PGDN,
+        KC_TRNS,     KC_P0,       KC_P1,       KC_P2,       KC_P3,       KC_PDOT,     KC_TRNS,     KC_TRNS,
                      KC_TRNS,                  KC_NO,       MO(_FN),     KC_NO,       KC_TRNS,     KC_TRNS,     KC_TRNS
     ),
 /*    여기는 보존용
     [1] = LAYOUT(
         // left hand
-        KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,
-        KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,
-        KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,
-        KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,
-        KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,
-        KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
         // right hand
-        KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,
-        KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,
-        KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,
-        KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,
-        KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,
-        KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,                  KC_TRNS,     KC_TRNS,
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
+                     KC_TRNS,                  KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS
     )
 */
 
