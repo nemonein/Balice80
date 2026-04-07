@@ -206,6 +206,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 // Dial 用
 // 26.04.03 : 확실하진 않은데.. 4개가 모두 정의되어 있지 않으면 컴파일 오류가 난다.
+// 그건 아닌데.. 아무튼 오류가 났었다. 이유는 모르겠네.
 #if defined(ENCODER_MAP_ENABLE)
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     // [_BADV] = { ENCODER_CCW_CW(KC_LEFT, KC_RGHT), ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
@@ -231,6 +232,7 @@ static bool process_tap_or_long_press_key(keyrecord_t *record, uint16_t long_pre
 };
 
 // Home Row Mode 를 위해.. (일단은 Dvorak 에서만 작동.)
+//     --> 2026.04.07 현재 안쓰고 있다. 자꾸 오작동이 생긴다.
 // Dvorak Layer 일 때만 작동하게끔 돼 있다. set_single_default_layer 때문인데..
 // 이걸 한 함수에서 하려면 현재 레이어를 확인해야만 한다.
 // 그게 좋을지, 아니면 Qwerty 용 함수를 따로 만들어서 구분해서 호출하는게 좋을지?
@@ -312,6 +314,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   //
   // Home Row Mode 用
+  //    --> 2026.04.07 현재, 쓰진 않고 있음.
   case HT_CT:
     return process_hmr_user(record, KC_LCTL);
   case TT_SF:
@@ -356,7 +359,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // case HT_CT:
   //   return process_tap_or_long_press_key(record, LM(_BAQT, MOD_LCTL));
 
-  // /* 여기는 Shift+Space 시작..
+  // /* 여기는 Shift+Space 시작.. 즉, 韓英 전환.
+  //       --> 더 정확히 말해서,
+  //           한글(Qwerty 상태)
+  //           영문(Dvorak 상태)
   // 다 잘 작동하는데, 딱 하나. Shift+SPC 를 계속 누르고 있을 때, 한/영 전환이 지속적으로 이뤄지지 않는다.
   // 굳이 이럴 필욘 없지만, 전엔 됐었는데, 안되니까 좀..?
   case KC_SPC: // SPACE 가 눌렸을 때!
@@ -389,10 +395,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (default_layer == _BADV) {
           // Dvorak 자판일 때는 영문이므로, 한글(Qwerty)자판으로 전환
           set_single_default_layer(_BAQT);
+          layer_move(_BAQT);
           registerd_key = KR_HAEN;
           hangul_kor = true;
         } else if (default_layer == _BAQT) { // Qwerty 라면, 한글자판이므로 영문/Dvorak 으로 전환.
           set_single_default_layer(_BADV);
+          layer_move(_BADV);
           if (host == OS_LINUX) { // Linux 라면 영문자판 전용 전환키를, 그외는 한영키를.
             registerd_key = KC_INT4;
             hangul_kor = false;
