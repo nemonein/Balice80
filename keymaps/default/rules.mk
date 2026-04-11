@@ -10,3 +10,6 @@ OS_DETECTION_ENABLE = yes
 
 # 연습
 # REPEAT_KEY_ENABLE = yes
+
+# Debugging
+CONSOLE_ENABLE = yes

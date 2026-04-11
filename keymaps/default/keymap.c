@@ -1,10 +1,25 @@
 // Copyright 2020 QMK / MudkipMao
 // SPDX-License-Identifier: GPL-2.0-or-later
+#include "print.h" // for Debug
 
 #include QMK_KEYBOARD_H
 
 #include "keymap_korean.h" // 이걸 해줘야 KR_HAEN, KR_HANJ 를 쓸 수 있다.
-#include "quantum.h"       // TAP_DANCE 등 가능하게. 원래 있던 코드.
+// #include "quantum.h"       // TAP_DANCE 등 가능하게. 원래 있던 코드.
+//                            이게 위 balice80.c 에 포함돼 있다. 따라서 여기선 안해도 될 듯..?
+
+// Each layer gets a name for readability, which is then used in the keymap
+// matrix below.
+// The underscores don't mean anything - you can have a layer called STUFF or
+// any other name. Layer names don't all need to be of the same length,
+// obviously, and you can also skip them entirely and just use numbers.
+
+enum layer_names {
+  _BADV,
+  _BAQT,
+  _NPD,
+  _FN,
+};
 
 enum custom_keycodes {
   TG_MOZC = SAFE_RANGE, // 일본어 자판 전환용.
@@ -15,6 +30,7 @@ enum custom_keycodes {
                         // MCTRL_H = SAFE_RANGE + 2, // H(Dvorak)을 mod-tap 으로
                         // 이용하기 위한...
   // PG_UPDN = SAFE_RANGE + 1, // PgUp/Dn 용인데.. 다른 방식으로 바꿨다.
+  T_DEBUG = SAFE_RANGE + 1,
 };
 
 // Tap Dance 用
@@ -60,19 +76,6 @@ static bool hangul_kor = false; // true 이면 hangul 활성화.
 #define DT_SF LT(1, KC_D)     // E : Shift
 #define ST_AL LT(1, KC_S)     // O : Alt
 #define AQT_GU LT(1, KC_A)    // A : GUI Dvorak 과 같이 쓰면 안된다.
-
-// Each layer gets a name for readability, which is then used in the keymap
-// matrix below.
-// The underscores don't mean anything - you can have a layer called STUFF or
-// any other name. Layer names don't all need to be of the same length,
-// obviously, and you can also skip them entirely and just use numbers.
-
-enum layer_names {
-  _BADV,
-  _BAQT,
-  _NPD,
-  _FN,
-};
 
 // 여기부터는 코드 정리 끄기. 정렬이 흩어진다.
 // clang-format off
@@ -124,7 +127,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_6,        KC_7,        KC_8,        KC_9,        KC_0,        KC_LBRC,     KC_RBRC,     KC_BSPC,     HM_CH,
         KC_F,        KC_G,        KC_C,        KC_R,        KC_L,        KC_SLSH,     KC_EQL,      KC_BSLS,     TD(TD_PU_PD),
         KC_D,        KC_H,        KC_T,        KC_N,        KC_S,        KC_MINS,                  KC_ENT,      ED_CE,
-        KC_X,        KC_B,        KC_M,        KC_W,        KC_V,        KC_Z,        KC_RSFT,     KC_UP,
+        T_DEBUG,     KC_B,        KC_M,        KC_W,        KC_V,        KC_Z,        KC_RSFT,     KC_UP,
                      KC_SPC,                   KC_RALT,     MO(_FN),     KC_RCTL,     KC_LEFT,     KC_DOWN,     KC_RGHT
     ),
 
@@ -141,11 +144,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_6,        KC_7,        KC_8,        KC_9,        KC_0,        KC_MINS,     KC_EQL,      KC_BSPC,     HM_CH,
         KC_Y,        KC_U,        KC_I,        KC_O,        KC_P,        KC_LBRC,     KC_RBRC,     KC_BSLS,     TD(TD_PU_PD),
         KC_H,        KC_J,        KC_K,        KC_L,        KC_SCLN,     KC_QUOT,                  KC_ENT,      ED_CE,
-        KC_B,        KC_N,        KC_M,        KC_COMM,     KC_DOT,      KC_SLSH,     KC_RSFT,     KC_UP,
-                     KC_SPC,                   KC_RALT,     MO(_FN),     KC_RCTL,     KC_LEFT,     KC_DOWN,     KC_RGHT
+        T_DEBUG,     KC_N,        KC_M,        KC_COMM,     KC_DOT,      KC_SLSH,     KC_RSFT,     KC_TRNS,
+                     KC_TRNS,                  KC_RALT,     MO(_FN),     KC_RCTL,     KC_TRNS,     KC_TRNS,     KC_TRNS
     ),
 
     [_FN] = LAYOUT(
+        // 이 키배열은 현재 너무 빈약하다.
+        // 뭔가 좀 더 다른 이들의 사용법을 보고 좀 더 넣을 필요가 있을 듯..
         // left hand
         // ESC       F1(1)        F2(2)        F3(3)        F4(4)        F5(5)        F6()
         QK_BOOT,     DF(_BADV),   DF(_BAQT),   KC_NO,       KC_NO,       KC_NO,       KC_NO,
@@ -166,21 +171,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_NPD] = LAYOUT(
         // left hand
+        //  차라리 X,C,V(Qwerty 기준) 자리를 TRNS 로 하지 말고, 거기에 Ctrl+C, Ctrl+V, Ctrl+X 를 넣는게 어떨지??
+        //  그럼 굳이 LCDQ 등을 할 필요가 없지 않나???
         // ESC       F1(1)        F2(2)        F3(3)        F4(4)        F5(5)        F6()
         KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
         KC_TRNS,     KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_TRNS,
         KC_TRNS,     KC_NO,       KC_COMM,     KC_DOT,      KC_NO,       KC_NO,       TG(_NPD),
         KC_NO,       KC_PPLS,     KC_PMNS,     KC_PAST,     KC_PSLS,     KC_NO,
-        KC_TRNS,     KC_NO,       KC_NO,       KC_CALC,     KC_NO,       KC_NO,
-        KC_LCTL,     KC_LGUI,     KC_NO,       KC_LALT,     KC_NO,
+        // KC_TRNS,     KC_NO,       KC_NO,       KC_CALC,     KC_NO,       KC_NO,  // 원래값.
+        KC_TRNS,     KC_NO,       KC_TRNS,     KC_TRNS,     KC_TRNS,       KC_NO,
+        LCDQ,        LSDQ,        KC_NO,       LADQ,        KC_NO,
         // right hand
         // F7(6)     F8(7)        F9(8)        F10(9)       F11(0)       F12(-)       F13?(=)
         KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
-        KC_NUM,      KC_PSLS,     KC_PAST,     KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_TRNS,     TD(TD_HM_ED),
+        KC_NUM,      KC_PSLS,     KC_PAST,     KC_NO,       KC_NO,       KC_TRNS,       KC_NO,       KC_TRNS,     TD(TD_HM_ED),
         KC_TRNS,     KC_P7,       KC_P8,       KC_P9,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_PGUP,
         KC_TRNS,     KC_P4,       KC_P5,       KC_P6,       KC_PPLS,     KC_PMNS,                  KC_TRNS,     KC_PGDN,
         KC_TRNS,     KC_P0,       KC_P1,       KC_P2,       KC_P3,       KC_PDOT,     KC_TRNS,     KC_TRNS,
-                     KC_TRNS,                  KC_NO,       MO(_FN),     KC_NO,       KC_TRNS,     KC_TRNS,     KC_TRNS
+                     KC_P0,                    KC_NO,       MO(_FN),     KC_NO,       KC_TRNS,     KC_TRNS,     KC_TRNS
     ),
 /*    여기는 보존용
     [1] = LAYOUT(
@@ -231,14 +239,16 @@ static bool process_tap_or_long_press_key(keyrecord_t *record, uint16_t long_pre
   return true; // Continue default handling.
 };
 
-// Home Row Mode 를 위해.. (일단은 Dvorak 에서만 작동.)
-//     --> 2026.04.07 현재 안쓰고 있다. 자꾸 오작동이 생긴다.
-// Dvorak Layer 일 때만 작동하게끔 돼 있다. set_single_default_layer 때문인데..
-// 이걸 한 함수에서 하려면 현재 레이어를 확인해야만 한다.
-// 그게 좋을지, 아니면 Qwerty 용 함수를 따로 만들어서 구분해서 호출하는게 좋을지?
-// 복잡한 것 보단 단순한게 좋겠지?
+/* Home Row Mode 를 위해.. (일단은 Dvorak 에서만 작동.)
+    --> 2026.04.07 현재 안쓰고 있다. 자꾸 오작동이 생긴다.
+Dvorak Layer 일 때만 작동하게끔 돼 있다. set_single_default_layer 때문인데..
+이걸 한 함수에서 하려면 현재 레이어를 확인해야만 한다.
+그게 좋을지, 아니면 Qwerty 용 함수를 따로 만들어서 구분해서 호출하는게 좋을지?
+복잡한 것 보단 단순한게 좋겠지?
+*/
+/* 코드 시작
 static bool process_hmr_user(keyrecord_t *record, uint16_t mod_keycode) {
-  const uint8_t mod_state = get_mods();                                 // Shift/Ctrl/Altl/Super 가 눌렸는지 확인.
+  const uint8_t mod_state = get_mods(); // Shift/Ctrl/Altl/Super 가 눌렸는지 확인.
   const uint8_t default_layer = get_highest_layer(default_layer_state); // Default Layer 를 알아내는 방법.
   // 문제.. 동시에 2키 이상 누를 순 없다. 그러려면 진짜 Modifiers 와 결합해야한다.
   // 방법이 있겠지? 사실, 키 2개 동시에 누를 일은 잘 없긴 한데..
@@ -270,6 +280,7 @@ static bool process_hmr_user(keyrecord_t *record, uint16_t mod_keycode) {
   }
   return true; // 원래 키를 내보낸다.
 };
+*/
 
 // Tap Dance 定義
 tap_dance_action_t tap_dance_actions[] = {
@@ -315,7 +326,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   //
   // Home Row Mode 用
   //    --> 2026.04.07 현재, 쓰진 않고 있음.
-  case HT_CT:
+
+  /* case HT_CT:
     return process_hmr_user(record, KC_LCTL);
   case TT_SF:
     return process_hmr_user(record, KC_RSFT);
@@ -347,7 +359,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return process_hmr_user(record, KC_LALT);
   case AQT_GU:
     return process_hmr_user(record, KC_LGUI);
-  //
+  */
+
   // https://getreuer.info/posts/keyboards/triggers/index.html#tap-vs.-long-press
   // 여기서 C(KC_HOME) 은, 길게 눌렀을 때 'Ctrl+KC_HOME' 을 뜻한다.
   case HM_CH:
@@ -379,28 +392,34 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return true;
     } */
 
-    if (record->event.pressed) { // SPC가 눌렸을 때.
-      // press 안쪽으로 이동. SPC 가 눌리는 현상이 자꾸 발생하기에.
-      // 그러나.. 안쪽에 있어도 마찬가지다. 제대로 하려면, 아래처럼 if pressed, else 文으로 해줘야 한다.
-      /* if (!(mod_state & MOD_MASK_LSHIFT)) { // 왼 Shift 가 안 눌렸다면, 그냥 space 로 넘겨..
-        // return true;
-        // tap_code16(KC_SPC);
-        register_code(KC_SPC); // 이거도 꽝.
-        // register_code(registerd_key);
-        unregister_code(KC_SPC);
-        return false;
-      } */
+    if (record->event.pressed) {         // SPC가 눌렸을 때.
       if (mod_state & MOD_MASK_LSHIFT) { // LShift 가 눌렸는지 확인
         mozc_jap = false;                // Shift+SPC 는 한/영 전환에만 사용되므로, 일본어 상태는 무조건 false.
+
+        // debug 用
+        /* #ifdef CONSOLE_ENABLE
+                uint8_t curr_layer = get_highest_layer(layer_state);
+                print("Shfit+Space pressed\n");
+                uprintf("Default_Layer: %u\n", default_layer);
+                uprintf("Current_Layer: %u\n", curr_layer);
+                if (IS_LAYER_ON(_BADV)) {
+                  print("Dvorak is On\n");
+                } else {
+                  print("Qwerty is On\n");
+                }
+        #endif */
+        // uint8_t curr_layer = get_highest_layer(layer_state);
+        // if (curr_layer == _BADV) {
         if (default_layer == _BADV) {
           // Dvorak 자판일 때는 영문이므로, 한글(Qwerty)자판으로 전환
           set_single_default_layer(_BAQT);
-          layer_move(_BAQT);
+          // layer_move(_BAQT);
           registerd_key = KR_HAEN;
           hangul_kor = true;
         } else if (default_layer == _BAQT) { // Qwerty 라면, 한글자판이므로 영문/Dvorak 으로 전환.
+                                             // } else if (curr_layer == _BAQT) { // Qwerty 라면, 한글자판이므로 영문/Dvorak 으로 전환.
           set_single_default_layer(_BADV);
-          layer_move(_BADV);
+          // layer_move(_BADV);
           if (host == OS_LINUX) { // Linux 라면 영문자판 전용 전환키를, 그외는 한영키를.
             registerd_key = KC_INT4;
             hangul_kor = false;
@@ -454,6 +473,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       tap_code16(registerd_key);
     }
 
+    return false;
+
+  case T_DEBUG:
+    if (record->event.pressed) {
+
+// debug 用
+#ifdef CONSOLE_ENABLE
+      uint8_t curr_layer1 = get_highest_layer(layer_state);
+      uint8_t default_layer1 = get_highest_layer(default_layer_state); // Default Layer 를 알아내는 방법.
+      print("Debug Key pressed\n");
+      uprintf("Default_Layer: %u\n", default_layer1);
+      uprintf("Current_Layer: %u\n", curr_layer1);
+      if (IS_LAYER_ON(_BADV)) {
+        print("Dvorak is On\n");
+      } else if (IS_LAYER_ON(_BAQT)) {
+        print("Qwerty is On\n");
+      }
+      print("################################################################################\n");
+#endif
+    }
     return false;
 
     /* case SS_HLO: // Layer 및 OS 인식 시험用
