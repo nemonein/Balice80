@@ -12,4 +12,4 @@ OS_DETECTION_ENABLE = yes
 # REPEAT_KEY_ENABLE = yes
 
 # Debugging
-CONSOLE_ENABLE = yes
+# CONSOLE_ENABLE = yes

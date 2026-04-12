@@ -1,10 +1,11 @@
 // Copyright 2020 QMK / MudkipMao
 // SPDX-License-Identifier: GPL-2.0-or-later
-#include "print.h" // for Debug
+// #include "print.h" // for Debug
 
 #include QMK_KEYBOARD_H
 
 #include "keymap_korean.h" // 이걸 해줘야 KR_HAEN, KR_HANJ 를 쓸 수 있다.
+// #include "print.h"         // for Debug
 // #include "quantum.h"       // TAP_DANCE 등 가능하게. 원래 있던 코드.
 //                            이게 위 balice80.c 에 포함돼 있다. 따라서 여기선 안해도 될 듯..?
 
@@ -121,9 +122,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,      KC_QUOT,     KC_COMM,     KC_DOT,      KC_P,        KC_Y,        TG(_NPD),
         KC_CAPS,     KC_A,        KC_O,        KC_E,        KC_U,        KC_I,
         KC_LSFT,     KC_SCLN,     KC_Q,        KC_J,        KC_K,        KC_X,
-        LCDQ,        LSDQ,        KC_NO,       LADQ,        KC_SPC,
+        LCDQ,        LSDQ,        KC_NO,       LADQ,                     KC_SPC,
         // right hand
-        KC_F7,       KC_F8,       KC_F9,       KC_F10,      KC_F11,      KC_F12,      KC_PGDN,     KC_DEL,      KC_MUTE,
+        KC_F7,       KC_F8,       KC_F9,       KC_F10,      KC_F11,      KC_F12,      KC_NO,       KC_DEL,      KC_MUTE,
         KC_6,        KC_7,        KC_8,        KC_9,        KC_0,        KC_LBRC,     KC_RBRC,     KC_BSPC,     HM_CH,
         KC_F,        KC_G,        KC_C,        KC_R,        KC_L,        KC_SLSH,     KC_EQL,      KC_BSLS,     TD(TD_PU_PD),
         KC_D,        KC_H,        KC_T,        KC_N,        KC_S,        KC_MINS,                  KC_ENT,      ED_CE,
@@ -133,39 +134,40 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_BAQT] = LAYOUT(
         // left hand
-        KC_ESC,      KC_F1,       KC_F2,       KC_F3,       KC_F4,       KC_F5,       KC_F6,
-        KC_GRV,      KC_1,        KC_2,        KC_3,        KC_4,        KC_5,        KC_BSPC,
-        KC_TAB,      KC_Q,        KC_W,        KC_E,        KC_R,        KC_T,        TG(_NPD),
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
+        KC_TAB,      KC_Q,        KC_W,        KC_E,        KC_R,        KC_T,        KC_TRNS,
         KC_CAPS,     KC_A,        KC_S,        KC_D,        KC_F,        KC_G,
         KC_LSFT,     KC_Z,        KC_X,        KC_C,        KC_V,        KC_B,
-        KC_LCTL,     KC_LWIN,     KC_NO,       KC_LALT,                  KC_SPC,
+        KC_LCTL,     KC_LWIN,     KC_NO,       KC_LALT,                  KC_TRNS,
         // right hand
-        KC_F7,       KC_F8,       KC_F9,       KC_F10,      KC_F11,      KC_F12,      KC_NO,       KC_DEL,      KC_MUTE,
-        KC_6,        KC_7,        KC_8,        KC_9,        KC_0,        KC_MINS,     KC_EQL,      KC_BSPC,     HM_CH,
-        KC_Y,        KC_U,        KC_I,        KC_O,        KC_P,        KC_LBRC,     KC_RBRC,     KC_BSLS,     TD(TD_PU_PD),
-        KC_H,        KC_J,        KC_K,        KC_L,        KC_SCLN,     KC_QUOT,                  KC_ENT,      ED_CE,
-        T_DEBUG,     KC_N,        KC_M,        KC_COMM,     KC_DOT,      KC_SLSH,     KC_RSFT,     KC_TRNS,
-                     KC_TRNS,                  KC_RALT,     MO(_FN),     KC_RCTL,     KC_TRNS,     KC_TRNS,     KC_TRNS
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_MINS,     KC_EQL,      KC_TRNS,     KC_TRNS,
+        KC_Y,        KC_U,        KC_I,        KC_O,        KC_P,        KC_LBRC,     KC_RBRC,     KC_TRNS,     KC_TRNS,
+        KC_H,        KC_J,        KC_K,        KC_L,        KC_SCLN,     KC_QUOT,                  KC_TRNS,     KC_TRNS,
+        KC_TRNS,     KC_N,        KC_M,        KC_COMM,     KC_DOT,      KC_SLSH,     KC_TRNS,     KC_TRNS,
+                     KC_TRNS,                  KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS
     ),
 
     [_FN] = LAYOUT(
-        // 이 키배열은 현재 너무 빈약하다.
+        // 이 키배열은 현재 너무 빈약하다. (26.04.12)
         // 뭔가 좀 더 다른 이들의 사용법을 보고 좀 더 넣을 필요가 있을 듯..
         // left hand
         // ESC       F1(1)        F2(2)        F3(3)        F4(4)        F5(5)        F6()
         QK_BOOT,     DF(_BADV),   DF(_BAQT),   KC_NO,       KC_NO,       KC_NO,       KC_NO,
         KC_NO,       PDF(_BADV),  PDF(_BAQT),  KC_NO,       KC_NO,       KC_NO,       KC_NO,
-        KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       TG(_NPD),
+        KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_TRNS,
         KC_NO,       KC_NO,       KC_SCRL,     KC_NO,       KC_NO,       KC_NO,
         KC_NO,       KC_NO,       KC_NO,       KC_CALC,     KC_NO,       KC_NO,
         KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,
         // right hand
         // F7(6)     F8(7)        F9(8)        F10(9)       F11(0)       F12(-)       F13?(=)
-        KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       TG(_NPD),    KC_NO,       KC_NO,       KC_NO,
+        // KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       TG(_NPD),    KC_NO,       KC_NO,       KC_NO,
+        KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       TO(_NPD),    KC_NO,       KC_NO,       KC_NO,
         KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       HM_CH,
         KC_NO,       KC_NO,       KC_INS,      KC_NO,       KC_PSCR,     KC_NO,       KC_NO,       KC_NO,       KC_PGUP,
         KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,                    KC_NO,       KC_PGDN,
-        KC_NO,       KC_NUM,      KC_NO,       KC_NO,       KC_NO,       KC_INT4,     TG_MOZC,     KC_NO,
+        KC_TRNS,     KC_NUM,      KC_NO,       KC_NO,       KC_NO,       KC_INT4,     TG_MOZC,     KC_NO,
                      KC_NO,                    KR_HAEN,     KC_NO,       KR_HANJ,     KC_NO,       KC_NO,       KC_NO
     ),
 
@@ -179,12 +181,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS,     KC_NO,       KC_COMM,     KC_DOT,      KC_NO,       KC_NO,       TG(_NPD),
         KC_NO,       KC_PPLS,     KC_PMNS,     KC_PAST,     KC_PSLS,     KC_NO,
         // KC_TRNS,     KC_NO,       KC_NO,       KC_CALC,     KC_NO,       KC_NO,  // 원래값.
-        KC_TRNS,     KC_NO,       KC_TRNS,     KC_TRNS,     KC_TRNS,       KC_NO,
-        LCDQ,        LSDQ,        KC_NO,       LADQ,        KC_NO,
+        KC_TRNS,     C(KC_Z),     C(KC_X),     C(KC_C),     C(KC_V),     KC_NO,
+        // LCDQ,        LSDQ,        KC_NO,       LADQ,        KC_NO,
+        KC_LCTL,     KC_LGUI,     KC_NO,       KC_LALT,     KC_TRNS,
         // right hand
         // F7(6)     F8(7)        F9(8)        F10(9)       F11(0)       F12(-)       F13?(=)
-        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
-        KC_NUM,      KC_PSLS,     KC_PAST,     KC_NO,       KC_NO,       KC_TRNS,       KC_NO,       KC_TRNS,     TD(TD_HM_ED),
+        // KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     TO(_BADV),     KC_TRNS,     KC_TRNS,
+        KC_NUM,      KC_PSLS,     KC_PAST,     KC_NO,       KC_NO,       KC_TRNS,     KC_NO,       KC_TRNS,     TD(TD_HM_ED),
         KC_TRNS,     KC_P7,       KC_P8,       KC_P9,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_PGUP,
         KC_TRNS,     KC_P4,       KC_P5,       KC_P6,       KC_PPLS,     KC_PMNS,                  KC_TRNS,     KC_PGDN,
         KC_TRNS,     KC_P0,       KC_P1,       KC_P2,       KC_P3,       KC_PDOT,     KC_TRNS,     KC_TRNS,
@@ -301,29 +305,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   static uint16_t registerd_key = KC_NO;
   switch (keycode) {
   // 여기서부터 내가 만든 것들.
-  //
-  // PgUp, PgDn 처리 : 그냥 누르면 PgUp, Alt+PgUp 은 PgDn. 궁여지책이긴 한데...
-  // Tap Dance 를 쓰기로..
-  /* case PG_UPDN:
-    // const uint8_t mod_state = get_mods();                                 // Shift/Ctrl/Altl/Super 가 눌렸는지 확인.
-    const uint8_t MOD_MASK_LALT = MOD_BIT(KC_LALT); // 왼쪽 쉬프트
-    // static uint16_t registerd_key = KC_NO;
 
-    if (record->event.pressed) {       // PG_UPDN 눌렸을 때.
-      if (mod_state & MOD_MASK_LALT) { // LALT가 눌렸는지 확인
-        registerd_key = KC_PGDN;
-      } else {
-        registerd_key = KC_PGUP;
-      }
-      del_mods(mod_state & MOD_MASK_LALT);
-      register_code(registerd_key);
-      set_mods(mod_state & MOD_MASK_LALT);
-    } else {
-      unregister_code(registerd_key);
-    }
-    return false; */
-
-  //
   // Home Row Mode 用
   //    --> 2026.04.07 현재, 쓰진 않고 있음.
 
@@ -368,58 +350,42 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   case ED_CE:
     return process_tap_or_long_press_key(record, C(KC_END));
 
-  // 연습 : 이거도 실패.
-  // case HT_CT:
-  //   return process_tap_or_long_press_key(record, LM(_BAQT, MOD_LCTL));
-
-  // /* 여기는 Shift+Space 시작.. 즉, 韓英 전환.
+  // 여기부터 Shift+Space 시작.. 즉, 韓英 전환.
   //       --> 더 정확히 말해서,
   //           한글(Qwerty 상태)
   //           영문(Dvorak 상태)
   // 다 잘 작동하는데, 딱 하나. Shift+SPC 를 계속 누르고 있을 때, 한/영 전환이 지속적으로 이뤄지지 않는다.
   // 굳이 이럴 필욘 없지만, 전엔 됐었는데, 안되니까 좀..?
   case KC_SPC: // SPACE 가 눌렸을 때!
+    // 26.04.11
+    // set_single_default_layer 를 쓰지 않고, 그냥 layer_move 등으로 해보기로 한다.
+    // 이렇게 되면, _NPD 등, 다른 층이 켜져있어도 바로 돌아올 수 있는 이점이 있다.
     // const uint8_t mod_state = get_mods();                                 // Shift/Ctrl/Altl/Super 가 눌렸는지 확인.
-    const uint8_t MOD_MASK_LSHIFT = MOD_BIT(KC_LSFT);                     // 왼쪽 쉬프트
-    const uint8_t default_layer = get_highest_layer(default_layer_state); // Default Layer 를 알아내는 방법.
-    os_variant_t host = detected_host_os();                               // 키보드 접속 OS 확인
-    // static uint16_t registerd_key = KC_NO;
-    // static uint16_t registerd_key = KC_SPC;                            // 이걸 이렇게 해놓으면 역시나 뭔가 오류가
-    // 생긴다. KC_NO 로 해야 제대로 작동.
-
-    // if 가 여기에 있으면, 가끔 공백이 그냥 입력되는 현상이 생긴다. 왜 그런걸까...?
-    /* if (!(mod_state & MOD_MASK_LSHIFT)) { // 왼 Shift 가 안 눌렸다면, 그냥 space 로 넘겨..
-      return true;
-    } */
+    const uint8_t MOD_MASK_LSHIFT = MOD_BIT(KC_LSFT); // 왼쪽 쉬프트
+    // const uint8_t default_layer = get_highest_layer(default_layer_state); // Default Layer 를 알아내는 방법.
+    uint8_t curr_layer = get_highest_layer(layer_state);
+    os_variant_t host = detected_host_os(); // 키보드 접속 OS 확인
 
     if (record->event.pressed) {         // SPC가 눌렸을 때.
       if (mod_state & MOD_MASK_LSHIFT) { // LShift 가 눌렸는지 확인
         mozc_jap = false;                // Shift+SPC 는 한/영 전환에만 사용되므로, 일본어 상태는 무조건 false.
 
-        // debug 用
-        /* #ifdef CONSOLE_ENABLE
-                uint8_t curr_layer = get_highest_layer(layer_state);
-                print("Shfit+Space pressed\n");
-                uprintf("Default_Layer: %u\n", default_layer);
-                uprintf("Current_Layer: %u\n", curr_layer);
-                if (IS_LAYER_ON(_BADV)) {
-                  print("Dvorak is On\n");
-                } else {
-                  print("Qwerty is On\n");
-                }
-        #endif */
-        // uint8_t curr_layer = get_highest_layer(layer_state);
+        switch (curr_layer) {
         // if (curr_layer == _BADV) {
-        if (default_layer == _BADV) {
+        case _BADV:
+          // if (default_layer == _BADV) {
           // Dvorak 자판일 때는 영문이므로, 한글(Qwerty)자판으로 전환
-          set_single_default_layer(_BAQT);
-          // layer_move(_BAQT);
+          // set_single_default_layer(_BAQT);
+          layer_move(_BAQT);
           registerd_key = KR_HAEN;
           hangul_kor = true;
-        } else if (default_layer == _BAQT) { // Qwerty 라면, 한글자판이므로 영문/Dvorak 으로 전환.
-                                             // } else if (curr_layer == _BAQT) { // Qwerty 라면, 한글자판이므로 영문/Dvorak 으로 전환.
-          set_single_default_layer(_BADV);
-          // layer_move(_BADV);
+          break;
+          // } else if (default_layer == _BAQT) { // Qwerty 라면, 한글자판이므로 영문/Dvorak 으로 전환.
+
+        case _BAQT:
+          // else if (curr_layer == _BAQT) { // Qwerty 라면, 한글자판이므로 영문/Dvorak 으로 전환.
+          // set_single_default_layer(_BADV);
+          layer_move(_BADV);
           if (host == OS_LINUX) { // Linux 라면 영문자판 전용 전환키를, 그외는 한영키를.
             registerd_key = KC_INT4;
             hangul_kor = false;
@@ -427,7 +393,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             registerd_key = KR_HAEN;
             hangul_kor = true;
           }
-        }
+          break;
+
+        case _NPD:
+        case _FN: // _BADV 나 _BAQT 가 아닐 때.. 그냥 _BADV 로 설정
+                  // 아니면, 예를 case _BAQT 에 몰아도 되려나?
+          layer_move(_BADV);
+          registerd_key = KC_INT4;
+          hangul_kor = false;
+          break;
+
+        } // switch 끝
         // 이걸 해줘야 Shift 눌린 상태가 해제되어, 순수 키만 내보낼 수 있게 된다.
         del_mods(mod_state & MOD_MASK_LSHIFT);
         register_code(registerd_key);
