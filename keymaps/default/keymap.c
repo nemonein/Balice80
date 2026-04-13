@@ -2,8 +2,19 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // #include "print.h" // for Debug
 
-#include QMK_KEYBOARD_H
+/*
+ * v0.60 2026.04.13
+ * Feker 때부터 써오던 set_single_default_layer 방식을 layer_move 로 바꿨음.
+ * 기타 자잘한 수정.
+ * 별 문제없으면 이걸로 계속 가기로..
+ * 다만, _FN 은 좀 더 보강 필요.
+ *
+ *
+ *
+ *
+ */
 
+#include QMK_KEYBOARD_H
 #include "keymap_korean.h" // 이걸 해줘야 KR_HAEN, KR_HANJ 를 쓸 수 있다.
 // #include "print.h"         // for Debug
 // #include "quantum.h"       // TAP_DANCE 등 가능하게. 원래 있던 코드.
@@ -55,7 +66,7 @@ static bool hangul_kor = false; // true 이면 hangul 활성화.
 // https://getreuer.info/posts/keyboards/triggers/index.html#tap-vs.-long-press
 #define HM_CH LT(0, KC_HOME)
 #define ED_CE LT(0, KC_END)
-
+/*
 // Home Row Mode 用 (Tap Hold Workaround)
 // 만들긴 했는데, 사용은 안하고 있다.
 // for Dvorak (H Tap _ CTrl, T Tap _ ShiFt ....)
@@ -77,6 +88,7 @@ static bool hangul_kor = false; // true 이면 hangul 활성화.
 #define DT_SF LT(1, KC_D)     // E : Shift
 #define ST_AL LT(1, KC_S)     // O : Alt
 #define AQT_GU LT(1, KC_A)    // A : GUI Dvorak 과 같이 쓰면 안된다.
+*/
 
 // 여기부터는 코드 정리 끄기. 정렬이 흩어진다.
 // clang-format off
@@ -163,7 +175,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // right hand
         // F7(6)     F8(7)        F9(8)        F10(9)       F11(0)       F12(-)       F13?(=)
         // KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       TG(_NPD),    KC_NO,       KC_NO,       KC_NO,
-        KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       TO(_NPD),    KC_NO,       KC_NO,       KC_NO,
+        KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,
         KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       HM_CH,
         KC_NO,       KC_NO,       KC_INS,      KC_NO,       KC_PSCR,     KC_NO,       KC_NO,       KC_NO,       KC_PGUP,
         KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,                    KC_NO,       KC_PGDN,
@@ -173,12 +185,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_NPD] = LAYOUT(
         // left hand
-        //  차라리 X,C,V(Qwerty 기준) 자리를 TRNS 로 하지 말고, 거기에 Ctrl+C, Ctrl+V, Ctrl+X 를 넣는게 어떨지??
-        //  그럼 굳이 LCDQ 등을 할 필요가 없지 않나???
+        // X,C,V 엔 Ctrl 을 적용했다.
         // ESC       F1(1)        F2(2)        F3(3)        F4(4)        F5(5)        F6()
         KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
         KC_TRNS,     KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_TRNS,
-        KC_TRNS,     KC_NO,       KC_COMM,     KC_DOT,      KC_NO,       KC_NO,       TG(_NPD),
+        KC_TRNS,     KC_NO,       KC_COMM,     KC_DOT,      KC_NO,       KC_NO,       KC_TRNS,
         KC_NO,       KC_PPLS,     KC_PMNS,     KC_PAST,     KC_PSLS,     KC_NO,
         // KC_TRNS,     KC_NO,       KC_NO,       KC_CALC,     KC_NO,       KC_NO,  // 원래값.
         KC_TRNS,     C(KC_Z),     C(KC_X),     C(KC_C),     C(KC_V),     KC_NO,
@@ -187,12 +198,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // right hand
         // F7(6)     F8(7)        F9(8)        F10(9)       F11(0)       F12(-)       F13?(=)
         // KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
-        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     TO(_BADV),     KC_TRNS,     KC_TRNS,
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
         KC_NUM,      KC_PSLS,     KC_PAST,     KC_NO,       KC_NO,       KC_TRNS,     KC_NO,       KC_TRNS,     TD(TD_HM_ED),
         KC_TRNS,     KC_P7,       KC_P8,       KC_P9,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_PGUP,
         KC_TRNS,     KC_P4,       KC_P5,       KC_P6,       KC_PPLS,     KC_PMNS,                  KC_TRNS,     KC_PGDN,
         KC_TRNS,     KC_P0,       KC_P1,       KC_P2,       KC_P3,       KC_PDOT,     KC_TRNS,     KC_TRNS,
-                     KC_P0,                    KC_NO,       MO(_FN),     KC_NO,       KC_TRNS,     KC_TRNS,     KC_TRNS
+                     KC_P0,                    KC_NO,       KC_TRNS,     KC_NO,       KC_TRNS,     KC_TRNS,     KC_TRNS
     ),
 /*    여기는 보존용
     [1] = LAYOUT(
@@ -431,18 +442,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         // if (default_layer == _BAQT && hangul_kor) { // Qwerty 이고, 한글
         // 자판이라면
         if (hangul_kor) { // 한글 자판에서 전환했다면 다시 한글자판으로.
-          set_single_default_layer(_BAQT);
+          // set_single_default_layer(_BAQT);
+          layer_move(_BAQT);
           registerd_key = KR_HAEN;
           // mozc_jap = false;
           // registerd_key = KC_INT2;
         } else {
-          set_single_default_layer(_BADV); // 한글이 꺼져있다면 영문이므로...
+          // set_single_default_layer(_BADV); // 한글이 꺼져있다면 영문이므로...
+          layer_move(_BADV);
           registerd_key = KC_INT4;
         }
         mozc_jap = false;
         // registerd_key = KC_INT2;
       } else { // 일본어 상태가 아니라면,
-        set_single_default_layer(_BADV);
+        // set_single_default_layer(_BADV);
+        layer_move(_BADV);
         mozc_jap = true;
         registerd_key = KC_INT2;
       }
@@ -470,25 +484,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #endif
     }
     return false;
-
-    /* case SS_HLO: // Layer 및 OS 인식 시험用
-        os_variant_t host = detected_host_os();
-        uint8_t current_layer = get_highest_layer(layer_state);
-        // if (record->event.pressed && host == OS_LINUX) {
-        if (record->event.pressed) {
-            // send_string("Hello, world!\n");
-            char buffer[16];
-            // int my_variable = 123;
-            sprintf(buffer, "Layer: %d\n", current_layer);
-            // SEND_STRING(buffer);
-            // sprintf(buffer, "The value is: %d", current_layer);
-            // Send the buffer content to the host
-            send_string(buffer);
-            sprintf(buffer, "OS: %d\n", host);
-            send_string(buffer);
-            // SEND_STRING(host);
-        }
-        return false; */
   }
   return true;
 };
