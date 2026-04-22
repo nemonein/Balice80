@@ -468,8 +468,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   case T_DEBUG:
     if (record->event.pressed) {
 
-// debug 用
-#ifdef CONSOLE_ENABLE
+      // debug 用
+      // #ifdef CONSOLE_ENABLE
       uint8_t curr_layer1 = get_highest_layer(layer_state);
       uint8_t default_layer1 = get_highest_layer(default_layer_state); // Default Layer 를 알아내는 방법.
       print("Debug Key pressed\n");
@@ -481,9 +481,55 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         print("Qwerty is On\n");
       }
       print("################################################################################\n");
-#endif
+      // #endif
+      print("###################### outside of ifdef  #########################################\n");
     }
     return false;
   }
   return true;
-};
+}
+
+// PC 와 통신 가능하게.
+void raw_hid_receive(uint8_t *data, uint8_t length) {
+  /*
+   * PC 에서 다음 신호를 보낸다.
+   * hidapitester --vidpid feed:1109 --usagePage 0xFF60 --open --length 32 --send-output 0,0 --close'
+   * --send-output 에서 0,0 중, 뒤 0 은 별 의미가 없고, 앞 숫자를 0, 1, 2 로 나누어 다음과 같이 작동하게 하자.
+   * 1 : Dvorak(English)
+   * 2 : Qwerty(한글)
+   * 3 : Dvorak(일본어)
+   */
+
+  uprintf("Data[0] is %u\n", data[0]);
+  /* if (data[0] == 0x01) {
+    layer_move(_BADV);
+    hangul_kor = false;
+    print("I received some stuff\n");
+  } */
+  switch (data[0]) {
+  case 0x01:
+    // 영어
+    layer_move(_BADV);
+    hangul_kor = false;
+    print("Received 1: Moving to _BADV\n");
+    break;
+
+  case 0x02:
+    // 한글
+    layer_move(_BAQT);
+    hangul_kor = true;
+    print("Received 2: Moving to _BAQT\n");
+    break;
+
+  case 0x03:
+    // 일본어 (이게 필요하려나...?)
+    layer_move(_BADV);
+    mozc_jap = true;
+    print("Received 3: Moving to _BADV\n");
+    break;
+
+  default:
+    // 1, 2, 3 외의 값이 들어올 경우
+    break;
+  }
+}

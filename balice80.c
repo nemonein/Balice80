@@ -27,6 +27,9 @@ layer_state_t layer_state_set_user(layer_state_t state) {
       gpio_write_pin(LED_LAYER_PIN, ledState ? 0 : 1);
     }
   }
+  /* #ifdef CONSOLE_ENABLE
+    print("layer changed!");
+  #endif */
   return state;
 }
 

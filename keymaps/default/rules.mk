@@ -8,8 +8,8 @@ TAP_DANCE_ENABLE = yes
 # OS 확인
 OS_DETECTION_ENABLE = yes
 
-# 연습
-# REPEAT_KEY_ENABLE = yes
+# PC 와 통신 설정
+RAW_ENABLE = yes
 
-# Debugging
-# CONSOLE_ENABLE = yes
+# Debugging Enable
+CONSOLE_ENABLE = yes
