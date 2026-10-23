@@ -31,6 +31,7 @@ enum layer_names {
   _BAQT,
   _NPD,
   _FN,
+  _MPV,
 };
 
 enum custom_keycodes {
@@ -136,7 +137,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LSFT,     KC_SCLN,     KC_Q,        KC_J,        KC_K,        KC_X,
         LCDQ,        LSDQ,        KC_NO,       LADQ,                     KC_SPC,
         // right hand
-        KC_F7,       KC_F8,       KC_F9,       KC_F10,      KC_F11,      KC_F12,      TG(_NPD),       KC_DEL,      KC_MUTE,
+        KC_F7,       KC_F8,       KC_F9,       KC_F10,      KC_F11,      KC_F12,      TG(_NPD),    KC_DEL,      KC_MUTE,
         KC_6,        KC_7,        KC_8,        KC_9,        KC_0,        KC_LBRC,     KC_RBRC,     KC_BSPC,     HM_CH,
         KC_F,        KC_G,        KC_C,        KC_R,        KC_L,        KC_SLSH,     KC_EQL,      KC_BSLS,     TD(TD_PU_PD),
         KC_D,        KC_H,        KC_T,        KC_N,        KC_S,        KC_MINS,                  KC_ENT,      ED_CE,
@@ -177,7 +178,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       TG(_NPD),    KC_NO,       KC_NO,       KC_NO,
         KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,
         KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       HM_CH,
-        KC_NO,       KC_NO,       KC_INS,      KC_NO,       KC_PSCR,     KC_NO,       KC_NO,       KC_NO,       KC_PGUP,
+        KC_NO,       KC_NO,       KC_INS,      KC_NO,       KC_PSCR,     KC_NO,       KC_NO,       TG(_MPV),    KC_PGUP,
         KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,                    KC_NO,       KC_PGDN,
         KC_TRNS,     KC_NUM,      KC_NO,       KC_NO,       KC_NO,       KC_INT4,     TG_MOZC,     KC_NO,
                      KC_NO,                    KR_HAEN,     KC_NO,       KR_HANJ,     KC_NO,       KC_NO,       KC_NO
@@ -205,6 +206,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS,     KC_P0,       KC_P1,       KC_P2,       KC_P3,       KC_PDOT,     KC_TRNS,     KC_TRNS,
                      KC_P0,                    KC_NO,       KC_TRNS,     KC_NO,       KC_TRNS,     KC_TRNS,     KC_TRNS
     ),
+
+    [_MPV] = LAYOUT(
+        // smplayer/mpv 전환用
+        // left hand
+        // ESC       F1(1)        F2(2)        F3(3)        F4(4)        F5(5)        F6()
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
+        KC_TRNS,     KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_TRNS,
+        KC_TRNS,     KC_NO,       KC_COMM,     KC_DOT,      KC_NO,       KC_NO,       KC_TRNS,
+        KC_NO,       KC_PPLS,     KC_PMNS,     KC_PAST,     KC_PSLS,     KC_NO,
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_NO,
+        KC_LCTL,     KC_LGUI,     KC_NO,       KC_LALT,     KC_TRNS,
+        // right hand
+        // F7(6)     F8(7)        F9(8)        F10(9)       F11(0)       F12(-)       F13?(=)
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
+        KC_PSLS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_F23,
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,                  KC_TRNS,     KC_F24,
+        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
+                     KC_TRNS,                  KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS
+    ),
 /*    여기는 보존용
     [1] = LAYOUT(
         // left hand
@@ -229,7 +250,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 // Dial 用
 // 26.04.03 : 확실하진 않은데.. 4개가 모두 정의되어 있지 않으면 컴파일 오류가 난다.
-// 그건 아닌데.. 아무튼 오류가 났었다. 이유는 모르겠네.
+// 26.10.23 : 맞다. 정의되어 있는 만큼 넣어줘야 한다.
+// nvim 은 아래가 흐리게 표시되어 좀 헷갈린다....
 #if defined(ENCODER_MAP_ENABLE)
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     // [_BADV] = { ENCODER_CCW_CW(KC_LEFT, KC_RGHT), ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
@@ -240,6 +262,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     // [_FN] = {ENCODER_CCW_CW(KC_UP, KC_DOWN), ENCODER_CCW_CW(KC_BRID, KC_BRIU)},
     [_FN] = {ENCODER_CCW_CW(C(KC_PGUP), C(KC_PGDN)), ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [_NPD] = {ENCODER_CCW_CW(C(KC_PGUP), C(KC_PGDN)), ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+    [_MPV] = {ENCODER_CCW_CW(C(KC_PGUP), C(KC_PGDN)), ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     // [_NPD] = {ENCODER_CCW_CW(KC_UP, KC_DOWN), ENCODER_CCW_CW(KC_BRID, KC_BRIU)},
 };
 #endif
@@ -491,6 +514,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 // PC 와 통신 가능하게.
 void raw_hid_receive(uint8_t *data, uint8_t length) {
+  // 일단 기능 끄기 2026-10-23
+  return;
+
   /*
    * PC 에서 다음 신호를 보낸다.
    * hidapitester --vidpid feed:1109 --usagePage 0xFF60 --open --length 32 --send-output 0,0 --close'
