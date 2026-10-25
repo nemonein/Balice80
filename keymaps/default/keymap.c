@@ -9,7 +9,11 @@
  * 별 문제없으면 이걸로 계속 가기로..
  * 다만, _FN 은 좀 더 보강 필요.
  *
- *
+ * 2026-10-25,
+ * F23 / F24 추가.
+ * F11/F12 를 TD 하면 가능하게. 이 키는 KDE 단축키와 연동되어, 각각,
+ * kdotool search --class smplaye windowactivate, kdotool search --class mpv windowactivate
+ * 를 실행한다.
  *
  *
  */
@@ -30,8 +34,7 @@ enum layer_names {
   _BADV,
   _BAQT,
   _NPD,
-  _FN,
-  _MPV,
+  _FN
 };
 
 enum custom_keycodes {
@@ -180,7 +183,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       TG(_NPD),    KC_NO,       KC_NO,       KC_NO,
         KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,
         KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       HM_CH,
-        KC_NO,       KC_NO,       KC_INS,      KC_NO,       KC_PSCR,     KC_NO,       KC_NO,       TG(_MPV),    KC_PGUP,
+        KC_NO,       KC_NO,       KC_INS,      KC_NO,       KC_PSCR,     KC_NO,       KC_NO,       KC_NO,       KC_PGUP,
         KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,                    KC_NO,       KC_PGDN,
         KC_TRNS,     KC_NUM,      KC_NO,       KC_NO,       KC_NO,       KC_INT4,     TG_MOZC,     KC_NO,
                      KC_NO,                    KR_HAEN,     KC_NO,       KR_HANJ,     KC_NO,       KC_NO,       KC_NO
@@ -207,26 +210,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS,     KC_P4,       KC_P5,       KC_P6,       KC_PPLS,     KC_PMNS,                  KC_TRNS,     KC_PGDN,
         KC_TRNS,     KC_P0,       KC_P1,       KC_P2,       KC_P3,       KC_PDOT,     KC_TRNS,     KC_TRNS,
                      KC_P0,                    KC_NO,       KC_TRNS,     KC_NO,       KC_TRNS,     KC_TRNS,     KC_TRNS
-    ),
-
-    [_MPV] = LAYOUT(
-        // smplayer/mpv 전환用
-        // left hand
-        // ESC       F1(1)        F2(2)        F3(3)        F4(4)        F5(5)        F6()
-        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
-        KC_TRNS,     KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_TRNS,
-        KC_TRNS,     KC_NO,       KC_COMM,     KC_DOT,      KC_NO,       KC_NO,       KC_TRNS,
-        KC_NO,       KC_PPLS,     KC_PMNS,     KC_PAST,     KC_PSLS,     KC_NO,
-        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_NO,
-        KC_LCTL,     KC_LGUI,     KC_NO,       KC_LALT,     KC_TRNS,
-        // right hand
-        // F7(6)     F8(7)        F9(8)        F10(9)       F11(0)       F12(-)       F13?(=)
-        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
-        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
-        KC_PSLS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_F23,
-        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,                  KC_TRNS,     KC_F24,
-        KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
-                     KC_TRNS,                  KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS
     ),
 /*    여기는 보존용
     [1] = LAYOUT(
@@ -264,7 +247,6 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     // [_FN] = {ENCODER_CCW_CW(KC_UP, KC_DOWN), ENCODER_CCW_CW(KC_BRID, KC_BRIU)},
     [_FN] = {ENCODER_CCW_CW(C(KC_PGUP), C(KC_PGDN)), ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [_NPD] = {ENCODER_CCW_CW(C(KC_PGUP), C(KC_PGDN)), ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [_MPV] = {ENCODER_CCW_CW(C(KC_PGUP), C(KC_PGDN)), ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     // [_NPD] = {ENCODER_CCW_CW(KC_UP, KC_DOWN), ENCODER_CCW_CW(KC_BRID, KC_BRIU)},
 };
 #endif
