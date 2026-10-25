@@ -15,6 +15,9 @@
  * kdotool search --class smplaye windowactivate, kdotool search --class mpv windowactivate
  * 를 실행한다.
  *
+ * 2026-10-25,
+ * _BADV, _BAQT 일 때만 한/영 자판자동변경(맨 아래 함수, raw_hid_receive 실행되게.)
+ * 이걸 안해놓으면, _NPD 등이 켜져있을 때, 창을 전환하여 포커스가 바뀌면 _NPD 가 꺼지게 된다.
  *
  */
 
@@ -519,30 +522,34 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
     hangul_kor = false;
     print("I received some stuff\n");
   } */
-  switch (data[0]) {
-  case 0x01:
-    // 영어
-    layer_move(_BADV);
-    hangul_kor = false;
-    print("Received 1: Moving to _BADV\n");
-    break;
 
-  case 0x02:
-    // 한글
-    layer_move(_BAQT);
-    hangul_kor = true;
-    print("Received 2: Moving to _BAQT\n");
-    break;
+  uint8_t curr_layer = get_highest_layer(layer_state);
+  if (curr_layer == _BADV && curr_layer == _BAQT) {
+    switch (data[0]) {
+    case 0x01:
+      // 영어
+      layer_move(_BADV);
+      hangul_kor = false;
+      print("Received 1: Moving to _BADV\n");
+      break;
 
-  case 0x03:
-    // 일본어 (이게 필요하려나...?)
-    layer_move(_BADV);
-    mozc_jap = true;
-    print("Received 3: Moving to _BADV\n");
-    break;
+    case 0x02:
+      // 한글
+      layer_move(_BAQT);
+      hangul_kor = true;
+      print("Received 2: Moving to _BAQT\n");
+      break;
 
-  default:
-    // 1, 2, 3 외의 값이 들어올 경우
-    break;
+    case 0x03:
+      // 일본어 (이게 필요하려나...?)
+      layer_move(_BADV);
+      mozc_jap = true;
+      print("Received 3: Moving to _BADV\n");
+      break;
+
+    default:
+      // 1, 2, 3 외의 값이 들어올 경우
+      break;
+    }
   }
 }
