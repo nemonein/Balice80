@@ -48,8 +48,10 @@ enum custom_keycodes {
 
 // Tap Dance 用
 enum {
-  TD_PU_PD,
-  TD_HM_ED,
+  PU_PD,
+  HM_ED,
+  F11_F23,
+  F12_F24
 };
 
 // 각 자판 활성 Flag.
@@ -137,14 +139,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LSFT,     KC_SCLN,     KC_Q,        KC_J,        KC_K,        KC_X,
         LCDQ,        LSDQ,        KC_NO,       LADQ,                     KC_SPC,
         // right hand
-        KC_F7,       KC_F8,       KC_F9,       KC_F10,      KC_F11,      KC_F12,      TG(_NPD),    KC_DEL,      KC_MUTE,
+        // KC_F7,       KC_F8,       KC_F9,       KC_F10,      KC_F11,      KC_F12,      TG(_NPD),    KC_DEL,      KC_MUTE,
+        KC_F7,       KC_F8,       KC_F9,       KC_F10,      TD(F11_F23), TD(F12_F24), TG(_NPD),    KC_DEL,      KC_MUTE,
         KC_6,        KC_7,        KC_8,        KC_9,        KC_0,        KC_LBRC,     KC_RBRC,     KC_BSPC,     HM_CH,
-        KC_F,        KC_G,        KC_C,        KC_R,        KC_L,        KC_SLSH,     KC_EQL,      KC_BSLS,     TD(TD_PU_PD),
+        KC_F,        KC_G,        KC_C,        KC_R,        KC_L,        KC_SLSH,     KC_EQL,      KC_BSLS,     TD(PU_PD),
         KC_D,        KC_H,        KC_T,        KC_N,        KC_S,        KC_MINS,                  KC_ENT,      ED_CE,
         T_DEBUG,     KC_B,        KC_M,        KC_W,        KC_V,        KC_Z,        KC_RSFT,     KC_UP,
                      KC_SPC,                   KC_RALT,     MO(_FN),     KC_RCTL,     KC_LEFT,     KC_DOWN,     KC_RGHT
     ),
-
     [_BAQT] = LAYOUT(
         // left hand
         KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
@@ -200,7 +202,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // F7(6)     F8(7)        F9(8)        F10(9)       F11(0)       F12(-)       F13?(=)
         // KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
         KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,     KC_TRNS,
-        KC_NUM,      KC_PSLS,     KC_PAST,     KC_NO,       KC_NO,       KC_TRNS,     KC_NO,       KC_TRNS,     TD(TD_HM_ED),
+        KC_NUM,      KC_PSLS,     KC_PAST,     KC_NO,       KC_NO,       KC_TRNS,     KC_NO,       KC_TRNS,     TD(HM_ED),
         KC_CALC,     KC_P7,       KC_P8,       KC_P9,       KC_NO,       KC_NO,       KC_NO,       KC_NO,       KC_PGUP,
         KC_TRNS,     KC_P4,       KC_P5,       KC_P6,       KC_PPLS,     KC_PMNS,                  KC_TRNS,     KC_PGDN,
         KC_TRNS,     KC_P0,       KC_P1,       KC_P2,       KC_P3,       KC_PDOT,     KC_TRNS,     KC_TRNS,
@@ -323,9 +325,12 @@ static bool process_hmr_user(keyrecord_t *record, uint16_t mod_keycode) {
 // Tap Dance 定義
 tap_dance_action_t tap_dance_actions[] = {
     // Tap once for PgUp, twice for PgDn
-    [TD_PU_PD] = ACTION_TAP_DANCE_DOUBLE(KC_PGUP, KC_PGDN),
+    [PU_PD] = ACTION_TAP_DANCE_DOUBLE(KC_PGUP, KC_PGDN),
     // Once for Home, Twice for End (on _NPD layer)
-    [TD_HM_ED] = ACTION_TAP_DANCE_DOUBLE(KC_HOME, KC_END),
+    [HM_ED] = ACTION_TAP_DANCE_DOUBLE(KC_HOME, KC_END),
+    // Once for F11, Twice for F23 (on _BADV layer)
+    [F11_F23] = ACTION_TAP_DANCE_DOUBLE(KC_F11, KC_F23),
+    [F12_F24] = ACTION_TAP_DANCE_DOUBLE(KC_F12, KC_F24),
 };
 
 // macro 用
@@ -515,7 +520,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // PC 와 통신 가능하게.
 void raw_hid_receive(uint8_t *data, uint8_t length) {
   // 일단 기능 끄기 2026-10-23
-  return;
+  // return;
 
   /*
    * PC 에서 다음 신호를 보낸다.
