@@ -524,18 +524,22 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
   //_BADV 또는 _BAQT 일때만 작동하도록. 안그러면 _NPD 상태일 때 창전환을 하면 _NPD 가 꺼진다.
   if (curr_layer == _BADV || curr_layer == _BAQT) {
     // 아래 스위치를 할 때, fcitx5 설정을 어떻게 해야하는지 좀 혼란스럽다.
-    // 현재는, 2026-10-25
-    // Activate input method by default         : 끔
-    // Reset input state when focus gains   : NO
-    // Share input state                    : Program
+    //   --> DeepSeek 조언으로, fcitx5 lua 파일을 수정했고, 잘 되는 듯 하다.
+    // 현재는, 2026-10-26
+    // Activate input method by default     : 끔
+    // Reset input state when focus gains   : No
+    // Share input state                    : No
     // 이렇게 해놨다.
-    // 이때, 큰 문제는 없는데, Obsidian 에서 tags 를 쓸 때 자꾸 한글로 초기화된다.
+    // 이전에는 아래를 둘다 Program 으로 해놨었는데, 내가 잘못 이해했었던 듯.
+    // fcitx5 lua 도 바꾸고, 설정도 위와 같이 한 뒤론 그런대로 잘 되는 듯??
+    // 이전에는, Obsidian 에서 tags 를 쓸 때 자꾸 한글로 초기화되거나 하는 좀 이상한 현상이 있었다.
 
     switch (data[0]) {
     case 0x01:
       // 영어
       layer_move(_BADV);
       hangul_kor = false;
+      mozc_jap = false;
       // dprintf("%d : Received 1: Moving to _BADV\n", cnt);
       print("Received 1: Moving to _BADV\n");
       break;
@@ -544,6 +548,7 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
       // 한글
       layer_move(_BAQT);
       hangul_kor = true;
+      mozc_jap = false;
       // dprintf("%d : Received 2: Moving to _BADV\n", cnt);
       print("Received 2: Moving to _BAQT\n");
       break;
@@ -552,6 +557,7 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
       // 일본어 (이게 필요하려나...?)
       layer_move(_BADV);
       mozc_jap = true;
+      hangul_kor = false;
       print("Received 3: Moving to _BADV\n");
       // dprintf("%d : Received 3: Moving to _BADV\n", cnt);
       break;
