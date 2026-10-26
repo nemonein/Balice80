@@ -516,20 +516,27 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
    * 3 : Dvorak(일본어)
    */
 
-  uprintf("Data[0] is %u\n", data[0]);
-  /* if (data[0] == 0x01) {
-    layer_move(_BADV);
-    hangul_kor = false;
-    print("I received some stuff\n");
-  } */
+  // uprintf("Data[0] is %u\n", data[0]);
+  dprintf("Data[0] is %u\n", data[0]);
 
   uint8_t curr_layer = get_highest_layer(layer_state);
-  if (curr_layer == _BADV && curr_layer == _BAQT) {
+  // 터미널에서 `qmk console --timestamp` 를 하면 Debug 상황을 볼 수 있다.
+  //_BADV 또는 _BAQT 일때만 작동하도록. 안그러면 _NPD 상태일 때 창전환을 하면 _NPD 가 꺼진다.
+  if (curr_layer == _BADV || curr_layer == _BAQT) {
+    // 아래 스위치를 할 때, fcitx5 설정을 어떻게 해야하는지 좀 혼란스럽다.
+    // 현재는, 2026-10-25
+    // Activate input method by default         : 끔
+    // Reset input state when focus gains   : NO
+    // Share input state                    : Program
+    // 이렇게 해놨다.
+    // 이때, 큰 문제는 없는데, Obsidian 에서 tags 를 쓸 때 자꾸 한글로 초기화된다.
+
     switch (data[0]) {
     case 0x01:
       // 영어
       layer_move(_BADV);
       hangul_kor = false;
+      // dprintf("%d : Received 1: Moving to _BADV\n", cnt);
       print("Received 1: Moving to _BADV\n");
       break;
 
@@ -537,6 +544,7 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
       // 한글
       layer_move(_BAQT);
       hangul_kor = true;
+      // dprintf("%d : Received 2: Moving to _BADV\n", cnt);
       print("Received 2: Moving to _BAQT\n");
       break;
 
@@ -545,6 +553,7 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
       layer_move(_BADV);
       mozc_jap = true;
       print("Received 3: Moving to _BADV\n");
+      // dprintf("%d : Received 3: Moving to _BADV\n", cnt);
       break;
 
     default:
