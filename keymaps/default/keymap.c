@@ -19,6 +19,14 @@
  * _BADV, _BAQT 일 때만 한/영 자판자동변경(맨 아래 함수, raw_hid_receive 실행되게.)
  * 이걸 안해놓으면, _NPD 등이 켜져있을 때, 창을 전환하여 포커스가 바뀌면 _NPD 가 꺼지게 된다.
  *
+ * 2026-11-04
+ * 잘 되던 F23(F11 두번)이 갑자기 안된다.
+ * Claude 에 물어보니, F23 이 OS 차원에서 쓰이고 있을 가능성이 있다고.
+ * wev 로는 F23 이 안잡히지만, `xkbcli interactive-evdev` 이걸로는 잡히는 건,
+ * 위 가능성을 뒷받침하는 거라 한다. 아무튼 이유야 그렇고..
+ * 해서, 잘 잡히는 F19 로 바꿨다.
+ *
+ *
  */
 
 #include QMK_KEYBOARD_H
@@ -56,7 +64,7 @@ enum custom_keycodes {
 enum {
   PU_PD,
   HM_ED,
-  F11_F23,
+  F11_F19,
   F12_F24
 };
 
@@ -146,7 +154,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         LCDQ,        LSDQ,        KC_NO,       LADQ,                     KC_SPC,
         // right hand
         // KC_F7,       KC_F8,       KC_F9,       KC_F10,      KC_F11,      KC_F12,      TG(_NPD),    KC_DEL,      KC_MUTE,
-        KC_F7,       KC_F8,       KC_F9,       KC_F10,      TD(F11_F23), TD(F12_F24), TG(_NPD),    KC_DEL,      KC_MUTE,
+        KC_F7,       KC_F8,       KC_F9,       KC_F10,      TD(F11_F19), TD(F12_F24), TG(_NPD),    KC_DEL,      KC_MUTE,
         KC_6,        KC_7,        KC_8,        KC_9,        KC_0,        KC_LBRC,     KC_RBRC,     KC_BSPC,     HM_CH,
         KC_F,        KC_G,        KC_C,        KC_R,        KC_L,        KC_SLSH,     KC_EQL,      KC_BSLS,     TD(PU_PD),
         KC_D,        KC_H,        KC_T,        KC_N,        KC_S,        KC_MINS,                  KC_ENT,      ED_CE,
@@ -314,7 +322,7 @@ tap_dance_action_t tap_dance_actions[] = {
     // Once for Home, Twice for End (on _NPD layer)
     [HM_ED] = ACTION_TAP_DANCE_DOUBLE(KC_HOME, KC_END),
     // Once for F11, Twice for F23 (on _BADV layer)
-    [F11_F23] = ACTION_TAP_DANCE_DOUBLE(KC_F11, KC_F23),
+    [F11_F19] = ACTION_TAP_DANCE_DOUBLE(KC_F11, KC_F19),
     [F12_F24] = ACTION_TAP_DANCE_DOUBLE(KC_F12, KC_F24),
 };
 
