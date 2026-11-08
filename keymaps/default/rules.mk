@@ -12,4 +12,8 @@ OS_DETECTION_ENABLE = yes
 RAW_ENABLE = yes
 
 # Debugging Enable
-CONSOLE_ENABLE = yes
+# CONSOLE_ENABLE = yes
+CONSOLE_ENABLE = no
+
+# Media Key 사용 (이게 켜져있어야 KC_MPRV 등 사용 가능.)
+EXTRAKEY_ENABLE = yes

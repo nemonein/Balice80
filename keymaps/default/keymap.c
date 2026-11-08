@@ -30,7 +30,7 @@
  */
 
 #include QMK_KEYBOARD_H
-#include "keymap_korean.h" // 이걸 해줘야 KR_HAEN, KR_HANJ 를 쓸 수 있다.
+#include "keymap_korean.h"  // 이걸 해줘야 KR_HAEN, KR_HANJ 를 쓸 수 있다.
 // #include "print.h"         // for Debug
 // #include "quantum.h"       // TAP_DANCE 등 가능하게. 원래 있던 코드.
 //                            이게 위 balice80.c 에 포함돼 있다. 따라서 여기선 안해도 될 듯..?
@@ -49,13 +49,13 @@ enum layer_names {
 };
 
 enum custom_keycodes {
-  TG_MOZC = SAFE_RANGE, // 일본어 자판 전환용.
-                        // 가상키를 만들지 않고, 그냥 KC_INT2(case KC_INT2:)
-                        // 상태에 따라 실제 발사될 키를 바꿔도 될 듯은 한데,
-                        // 그냥 이렇게 해봤다.
-                        // TEST_GRV = SAFE_RANGE + 1,
-                        // MCTRL_H = SAFE_RANGE + 2, // H(Dvorak)을 mod-tap 으로
-                        // 이용하기 위한...
+  TG_MOZC = SAFE_RANGE,  // 일본어 자판 전환용.
+                         // 가상키를 만들지 않고, 그냥 KC_INT2(case KC_INT2:)
+                         // 상태에 따라 실제 발사될 키를 바꿔도 될 듯은 한데,
+                         // 그냥 이렇게 해봤다.
+                         // TEST_GRV = SAFE_RANGE + 1,
+                         // MCTRL_H = SAFE_RANGE + 2, // H(Dvorak)을 mod-tap 으로
+                         // 이용하기 위한...
   // PG_UPDN = SAFE_RANGE + 1, // PgUp/Dn 용인데.. 다른 방식으로 바꿨다.
   T_DEBUG = SAFE_RANGE + 1,
 };
@@ -65,12 +65,14 @@ enum {
   PU_PD,
   HM_ED,
   F11_F19,
-  F12_F24
+  F12_F24,
+  F9_MP,
+  F10_MN
 };
 
 // 각 자판 활성 Flag.
-static bool mozc_jap = false;   // true 이면 mozc 활성화.
-static bool hangul_kor = false; // true 이면 hangul 활성화.
+static bool mozc_jap = false;    // true 이면 mozc 활성화.
+static bool hangul_kor = false;  // true 이면 hangul 활성화.
 // static bool dvorak_eng = false; // true 이면 영어 활성화. 아직 구현 전.
 
 // for Dvorak/Qwerty Layer Change.
@@ -147,14 +149,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BADV] = LAYOUT(
         // left hand
         KC_ESC,      KC_F1,       KC_F2,       KC_F3,       KC_F4,       KC_F5,       KC_F6,
-        KC_GRV,      KC_1,        KC_2,        KC_3,        KC_4,        KC_5,        KC_BSPC,
+        // KC_GRV,      KC_1,        KC_2,        KC_3,        KC_4,        KC_5,        KC_BSPC,
+        KC_GRV,      KC_1,        KC_2,        KC_3,        KC_4,        KC_5,        KC_F23,
         KC_TAB,      KC_QUOT,     KC_COMM,     KC_DOT,      KC_P,        KC_Y,        KC_NO,
         KC_CAPS,     KC_A,        KC_O,        KC_E,        KC_U,        KC_I,
         KC_LSFT,     KC_SCLN,     KC_Q,        KC_J,        KC_K,        KC_X,
         LCDQ,        LSDQ,        KC_NO,       LADQ,                     KC_SPC,
         // right hand
-        // KC_F7,       KC_F8,       KC_F9,       KC_F10,      KC_F11,      KC_F12,      TG(_NPD),    KC_DEL,      KC_MUTE,
-        KC_F7,       KC_F8,       KC_F9,       KC_F10,      TD(F11_F19), TD(F12_F24), TG(_NPD),    KC_DEL,      KC_MUTE,
+        // KC_F7,    KC_F8,       KC_F9,       KC_F10,      KC_F11,      KC_F12,      TG(_NPD),    KC_DEL,      KC_MUTE,
+        KC_F7,       KC_F8,       TD(F9_MP),   TD(F10_MN),  TD(F11_F19), TD(F12_F24), TG(_NPD),    KC_DEL,      KC_MUTE,
         KC_6,        KC_7,        KC_8,        KC_9,        KC_0,        KC_LBRC,     KC_RBRC,     KC_BSPC,     HM_CH,
         KC_F,        KC_G,        KC_C,        KC_R,        KC_L,        KC_SLSH,     KC_EQL,      KC_BSLS,     TD(PU_PD),
         KC_D,        KC_H,        KC_T,        KC_N,        KC_S,        KC_MINS,                  KC_ENT,      ED_CE,
@@ -263,13 +266,13 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 #endif
 
 static bool process_tap_or_long_press_key(keyrecord_t *record, uint16_t long_press_keycode) {
-  if (record->tap.count == 0) { // Key is being held.
+  if (record->tap.count == 0) {  // Key is being held.
     if (record->event.pressed) {
       tap_code16(long_press_keycode);
     }
-    return false; // Skip default handling.
+    return false;  // Skip default handling.
   }
-  return true; // Continue default handling.
+  return true;  // Continue default handling.
 };
 
 /* Home Row Mode 를 위해.. (일단은 Dvorak 에서만 작동.)
@@ -324,6 +327,8 @@ tap_dance_action_t tap_dance_actions[] = {
     // Once for F11, Twice for F23 (on _BADV layer)
     [F11_F19] = ACTION_TAP_DANCE_DOUBLE(KC_F11, KC_F19),
     [F12_F24] = ACTION_TAP_DANCE_DOUBLE(KC_F12, KC_F24),
+    [F9_MP] = ACTION_TAP_DANCE_DOUBLE(KC_F9, KC_MPRV),
+    [F10_MN] = ACTION_TAP_DANCE_DOUBLE(KC_F10, KC_MNXT),
 };
 
 // macro 用
@@ -333,7 +338,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // // Default Layer 를 알아내는 방법.
   // uint8_t default_layer = get_highest_layer(default_layer_state);
 
-  const uint8_t mod_state = get_mods(); // Shift/Ctrl/Altl/Super 가 눌렸는지 확인.
+  const uint8_t mod_state = get_mods();  // Shift/Ctrl/Altl/Super 가 눌렸는지 확인.
   static uint16_t registerd_key = KC_NO;
   switch (keycode) {
   // 여기서부터 내가 만든 것들.
@@ -388,19 +393,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   //           영문(Dvorak 상태)
   // 다 잘 작동하는데, 딱 하나. Shift+SPC 를 계속 누르고 있을 때, 한/영 전환이 지속적으로 이뤄지지 않는다.
   // 굳이 이럴 필욘 없지만, 전엔 됐었는데, 안되니까 좀..?
-  case KC_SPC: // SPACE 가 눌렸을 때!
+  case KC_SPC:  // SPACE 가 눌렸을 때!
     // 26.04.11
     // set_single_default_layer 를 쓰지 않고, 그냥 layer_move 등으로 해보기로 한다.
     // 이렇게 되면, _NPD 등, 다른 층이 켜져있어도 바로 돌아올 수 있는 이점이 있다.
     // const uint8_t mod_state = get_mods();                                 // Shift/Ctrl/Altl/Super 가 눌렸는지 확인.
-    const uint8_t MOD_MASK_LSHIFT = MOD_BIT(KC_LSFT); // 왼쪽 쉬프트
+    const uint8_t MOD_MASK_LSHIFT = MOD_BIT(KC_LSFT);  // 왼쪽 쉬프트
     // const uint8_t default_layer = get_highest_layer(default_layer_state); // Default Layer 를 알아내는 방법.
     uint8_t curr_layer = get_highest_layer(layer_state);
-    os_variant_t host = detected_host_os(); // 키보드 접속 OS 확인
+    os_variant_t host = detected_host_os();  // 키보드 접속 OS 확인
 
-    if (record->event.pressed) {         // SPC가 눌렸을 때.
-      if (mod_state & MOD_MASK_LSHIFT) { // LShift 가 눌렸는지 확인
-        mozc_jap = false;                // Shift+SPC 는 한/영 전환에만 사용되므로, 일본어 상태는 무조건 false.
+    if (record->event.pressed) {          // SPC가 눌렸을 때.
+      if (mod_state & MOD_MASK_LSHIFT) {  // LShift 가 눌렸는지 확인
+        mozc_jap = false;                 // Shift+SPC 는 한/영 전환에만 사용되므로, 일본어 상태는 무조건 false.
 
         switch (curr_layer) {
         // if (curr_layer == _BADV) {
@@ -418,7 +423,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           // else if (curr_layer == _BAQT) { // Qwerty 라면, 한글자판이므로 영문/Dvorak 으로 전환.
           // set_single_default_layer(_BADV);
           layer_move(_BADV);
-          if (host == OS_LINUX) { // Linux 라면 영문자판 전용 전환키를, 그외는 한영키를.
+          if (host == OS_LINUX) {  // Linux 라면 영문자판 전용 전환키를, 그외는 한영키를.
             registerd_key = KC_INT4;
             hangul_kor = false;
           } else {
@@ -428,41 +433,41 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           break;
 
         case _NPD:
-        case _FN: // _BADV 나 _BAQT 가 아닐 때.. 그냥 _BADV 로 설정
-                  // 아니면, 예를 case _BAQT 에 몰아도 되려나?
+        case _FN:  // _BADV 나 _BAQT 가 아닐 때.. 그냥 _BADV 로 설정
+                   // 아니면, 예를 case _BAQT 에 몰아도 되려나?
           layer_move(_BADV);
           registerd_key = KC_INT4;
           hangul_kor = false;
           break;
 
-        } // switch 끝
+        }  // switch 끝
         // 이걸 해줘야 Shift 눌린 상태가 해제되어, 순수 키만 내보낼 수 있게 된다.
         del_mods(mod_state & MOD_MASK_LSHIFT);
         register_code(registerd_key);
-        set_mods(mod_state & MOD_MASK_LSHIFT); // 키를 내보내고 나서 다시 원상복귀.
-      } else {                                 // LShift 가 눌리지 않으면 그냥 SPC
+        set_mods(mod_state & MOD_MASK_LSHIFT);  // 키를 내보내고 나서 다시 원상복귀.
+      } else {                                  // LShift 가 눌리지 않으면 그냥 SPC
         registerd_key = KC_SPC;
         register_code(registerd_key);
       }
-    } else { // space가 떼어졌을 때
+    } else {  // space가 떼어졌을 때
       unregister_code(registerd_key);
     }
     return false;
 
-  case TG_MOZC:                               // 일본어 전환
-    if (record->event.pressed) {              // TG_MOZC가 눌렸을 때.
-      os_variant_t host = detected_host_os(); // 키보드 접속 OS 확인
+  case TG_MOZC:                                // 일본어 전환
+    if (record->event.pressed) {               // TG_MOZC가 눌렸을 때.
+      os_variant_t host = detected_host_os();  // 키보드 접속 OS 확인
 
       if (host != OS_LINUX) {
         tap_code16(KC_EXLM);
         break;
-      } // linux 가 아니면 無意味.
-        // const uint8_t default_layer = get_highest_layer(default_layer_state);
-        // // Default Layer 를 알아내는 방법.
-      if (mozc_jap) { // 현재 일본어 상태라면 자판은 _BADV 라아먄 한다.
+      }  // linux 가 아니면 無意味.
+         // const uint8_t default_layer = get_highest_layer(default_layer_state);
+         // // Default Layer 를 알아내는 방법.
+      if (mozc_jap) {  // 현재 일본어 상태라면 자판은 _BADV 라아먄 한다.
         // if (default_layer == _BAQT && hangul_kor) { // Qwerty 이고, 한글
         // 자판이라면
-        if (hangul_kor) { // 한글 자판에서 전환했다면 다시 한글자판으로.
+        if (hangul_kor) {  // 한글 자판에서 전환했다면 다시 한글자판으로.
           // set_single_default_layer(_BAQT);
           layer_move(_BAQT);
           registerd_key = KR_HAEN;
@@ -475,7 +480,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         mozc_jap = false;
         // registerd_key = KC_INT2;
-      } else { // 일본어 상태가 아니라면,
+      } else {  // 일본어 상태가 아니라면,
         // set_single_default_layer(_BADV);
         layer_move(_BADV);
         mozc_jap = true;
@@ -492,7 +497,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       // debug 用
       // #ifdef CONSOLE_ENABLE
       uint8_t curr_layer1 = get_highest_layer(layer_state);
-      uint8_t default_layer1 = get_highest_layer(default_layer_state); // Default Layer 를 알아내는 방법.
+      uint8_t default_layer1 = get_highest_layer(default_layer_state);  // Default Layer 를 알아내는 방법.
       print("Debug Key pressed\n");
       uprintf("Default_Layer: %u\n", default_layer1);
       uprintf("Current_Layer: %u\n", curr_layer1);
@@ -529,7 +534,7 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
 
   uint8_t curr_layer = get_highest_layer(layer_state);
   // 터미널에서 `qmk console --timestamp` 를 하면 Debug 상황을 볼 수 있다.
-  //_BADV 또는 _BAQT 일때만 작동하도록. 안그러면 _NPD 상태일 때 창전환을 하면 _NPD 가 꺼진다.
+  // _BADV 또는 _BAQT 일때만 작동하도록. 안그러면 _NPD 상태일 때 창전환을 하면 _NPD 가 꺼진다.
   if (curr_layer == _BADV || curr_layer == _BAQT) {
     // 아래 스위치를 할 때, fcitx5 설정을 어떻게 해야하는지 좀 혼란스럽다.
     //   --> DeepSeek 조언으로, fcitx5 lua 파일을 수정했고, 잘 되는 듯 하다.

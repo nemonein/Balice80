@@ -1,0 +1,14 @@
+# 2026-11-07
+# 이걸 넣어야, keymap.c 에서 다음 함수가 제대로 표시된다. (안하면 흐리게.)
+# 다만, 지금은 compile_commands.jsoncompile_commands.json 을 만들어 넣었기 때문에,
+# 이건 없어도 된다.
+# 쓰려면, 파일명을 `.clangd` 로 바꿔야 한다.
+#
+#
+# #if defined(ENCODER_MAP_ENABLE)
+# const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
+CompileFlags:
+  Add:
+    - -DENCODER_MAP_ENABLE
+    - -I/home/nemoc6/qmk_firmware
+    - -I/home/nemoc6/qmk_firmware/quantum
